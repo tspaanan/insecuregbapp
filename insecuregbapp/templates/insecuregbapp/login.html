@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Insecure GuestBook</title>
+    </head>
+    <body>
+	<h1>Insecure GuestBook</h1>
+	<h2>Contains 5 vulnerabilities from <a href="https://owasp.org/www-project-top-ten/">OWASP Top 10 Web Application Security Risks</a></h2>
+	<form action="/insecuregbapp/login" method="POST">
+            <label>Username:</label>
+	    <input type="text" name="oldusername"/>
+	    <label>Password:</label>
+	    <input type="text" name="oldpassword"/>
+	    <input type="submit" value="Login"/>
+	</form>
+    </body>
+</html>

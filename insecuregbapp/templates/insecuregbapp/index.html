@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Insecure GuestBook</title>
+    </head>
+    <body>
+	<h1>Insecure GuestBook</h1>
+	<h2>Contains 5 vulnerabilities from <a href="https://owasp.org/www-project-top-ten/">OWASP Top 10 Web Application Security Risks</a></h2>
+	<a href="/insecuregbapp/register">Register</a> <a href="/insecuregbapp/login">Login</a> <a href="/insecuregbapp/logout">Logout</a>
+	<form action="/insecuregbapp/addmessage" method="GET">
+  	    <input type="text" name="newmessage"/>
+	    <input type="submit" value="Leave message"/>
+	</form>
+	<table>
+	    <tr>
+		<th>Message</th>
+		<th>Author</th>
+		<th>Time</th>
+	    </tr>
+	    {% for message in messages %}
+	    <tr>
+		<td>{{message.content}}</td>
+		<td>{{message.author}}</td>
+		<td>{{message.timestamp}}</td>
+	    </tr>
+	    {% endfor %}
+    </body>
+</html>
