@@ -59,12 +59,12 @@ def addmessage(request):
     newcontent = request.GET.get("newmessage")
     if request.user.id == None:
         current_user = Visitor(visitor_name="anonymous")
-        current_user.save()
-    #else:
+        current_user.save() #each anonymous is saved to the database
+    else:
     #current_user = Visitor.objects.get(visitor_name=request.user.username)
     #print(request.user.username)
     #print(request.GET.get("insecure_username"))
-    current_user = Visitor.objects.get(visitor_name=request.GET.get("insecure_username"))
+        current_user = Visitor.objects.get(visitor_name=request.GET.get("insecure_username"))
     #newmessage = Message(content=newcontent, timestamp=datetime.datetime.now(), author=current_user)
     newmessage = Message(content="", timestamp=datetime.datetime.now(), author=current_user)
     newmessage.save()
