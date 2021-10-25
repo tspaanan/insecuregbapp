@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from .extra_views import redirectToInsecuregbapp
 
 urlpatterns = [
     path('insecuregbapp/', include('insecuregbapp.urls')),
     path('admin/', admin.site.urls),
+    path('', redirectToInsecuregbapp),
 ]

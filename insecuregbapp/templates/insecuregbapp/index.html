@@ -9,6 +9,7 @@
 	<a href="/insecuregbapp/register">Register</a> <a href="/insecuregbapp/login">Login</a> <a href="/insecuregbapp/logout">Logout</a>
 	<form action="/insecuregbapp/addmessage" method="GET">
   	    <input type="text" name="newmessage"/>
+	    <input type="hidden" name="insecure_username" value={{insec_user}} />
 	    <input type="submit" value="Leave message"/>
 	</form>
 	<table>
@@ -19,7 +20,7 @@
 	    </tr>
 	    {% for message in messages %}
 	    <tr>
-		<td>{{message.content}}</td>
+		<td>{{message.content|safe}}</td>
 		<td>{{message.author}}</td>
 		<td>{{message.timestamp}}</td>
 	    </tr>
