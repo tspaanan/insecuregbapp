@@ -53,7 +53,7 @@ def logout(request):
 
 def addmessage(request):
     newcontent = request.GET.get("newmessage")
-    if request.user.id == None:
+    if request.GET.get("insecure_username") == "anonymous":
         current_user = Visitor(visitor_name="anonymous")
         current_user.save() #each anonymous is saved to the database
         #yes, it is yet another deliberately poor design choice
