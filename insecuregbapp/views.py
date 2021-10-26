@@ -1,17 +1,16 @@
 import datetime
 from django.contrib.auth import authenticate, login as li, logout as lg
 from django.contrib.auth.models import User
+from django.db import connection
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
-from .models import Message, Visitor
-from django.db import connection
-from .poor_crypto import poor_substitution_cipher as psc
 from .confused_user_management import insecure_user_transfer as iut
+from .poor_crypto import poor_substitution_cipher as psc
+from .models import Message, Visitor
 
 def index(request):
     all_messages = Message.objects.all()
-    #context = {"messages": all_messages}
     insecure_username = ""
     if request.user.id == None:
         insecure_username = "anonymous"
@@ -38,13 +37,10 @@ def login(request):
 def register(request):
     if request.method == "POST":
         new_visitor = Visitor(visitor_name=request.POST.get("newusername"))
-        #new_visitor.visitor_pass = request.POST.get("newpassword")
+        if len(request.POST.get("newpassword")) > 8:
+            return redirect("register")
         new_visitor.visitor_pass = psc(psc(request.POST.get("newpassword"),'R'),'L')
         new_visitor.save()
-        #new_user = User.objects.create_user(username=new_visitor.visitor_name, password=new_visitor.visitor_pass)
-        #new_user.is_superuser = new_visitor.admin_true
-        #new_user.is_staff = new_visitor.admin_true
-        #new_user.save()
         new_user = iut(new_visitor)
         lg(request)
         li(request, new_user)
@@ -60,12 +56,9 @@ def addmessage(request):
     if request.user.id == None:
         current_user = Visitor(visitor_name="anonymous")
         current_user.save() #each anonymous is saved to the database
+        #yes, it is yet another deliberately poor design choice
     else:
-    #current_user = Visitor.objects.get(visitor_name=request.user.username)
-    #print(request.user.username)
-    #print(request.GET.get("insecure_username"))
         current_user = Visitor.objects.get(visitor_name=request.GET.get("insecure_username"))
-    #newmessage = Message(content=newcontent, timestamp=datetime.datetime.now(), author=current_user)
     newmessage = Message(content="", timestamp=datetime.datetime.now(), author=current_user)
     newmessage.save()
     with connection.cursor() as cursor:
